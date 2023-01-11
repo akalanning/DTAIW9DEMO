@@ -1,0 +1,135 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Document.Courses\\2022 設計思考與人工智慧\\W9\\GADWEB\\GADWEB\\GADWEB.csproj": {}
+  },
+  "projects": {
+    "C:\\Document.Courses\\2022 設計思考與人工智慧\\W9\\GADWEB\\GADWEB\\GADWEB.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Document.Courses\\2022 設計思考與人工智慧\\W9\\GADWEB\\GADWEB\\GADWEB.csproj",
+        "projectName": "GADWEB",
+        "projectPath": "C:\\Document.Courses\\2022 設計思考與人工智慧\\W9\\GADWEB\\GADWEB\\GADWEB.csproj",
+        "packagesPath": "C:\\Users\\akamonet.IVAN\\.nuget\\packages\\",
+        "outputPath": "C:\\Document.Courses\\2022 設計思考與人工智慧\\W9\\GADWEB\\GADWEB\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\akamonet.IVAN\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0-windows"
+        ],
+        "sources": {
+          "C:\\Document.Courses\\2022 設計思考與人工智慧\\W9\\GAD\\tmp.pkg": {},
+          "C:\\PROJECT-AI\\nuget-artifacts-windows-v4.2": {},
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\bin\\vcpkg\\scripts\\buildsystems": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0-windows7.0": {
+            "targetAlias": "net6.0-windows",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0-windows7.0": {
+          "targetAlias": "net6.0-windows",
+          "dependencies": {
+            "Accord": {
+              "target": "Package",
+              "version": "[3.8.0, )"
+            },
+            "Accord.Imaging": {
+              "target": "Package",
+              "version": "[3.8.0, )"
+            },
+            "Accord.MachineLearning": {
+              "target": "Package",
+              "version": "[3.8.0, )"
+            },
+            "Accord.Math": {
+              "target": "Package",
+              "version": "[3.8.0, )"
+            },
+            "Accord.Statistics": {
+              "target": "Package",
+              "version": "[3.8.0, )"
+            },
+            "Accord.Video": {
+              "target": "Package",
+              "version": "[3.8.0, )"
+            },
+            "Accord.Vision": {
+              "target": "Package",
+              "version": "[3.8.0, )"
+            },
+            "CoreCompat.System.Drawing.v2": {
+              "target": "Package",
+              "version": "[5.2.0-preview1-r131, )",
+              "aliases": "cc"
+            },
+            "IronSoftware.System.Drawing": {
+              "target": "Package",
+              "version": "[2023.1.11379, )"
+            },
+            "Keras.NET": {
+              "target": "Package",
+              "version": "[3.8.5, )"
+            },
+            "Microsoft.ML.OnnxRuntime.Managed": {
+              "target": "Package",
+              "version": "[1.13.1-dev-20221026-1209-861125ccb, )"
+            },
+            "Microsoft.ML.OnnxRuntime.OpenVino": {
+              "target": "Package",
+              "version": "[1.13.1-dev-20221026-1209-861125ccb, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.2, )"
+            },
+            "SixLabors.ImageSharp": {
+              "target": "Package",
+              "version": "[2.1.3, )"
+            },
+            "System.Drawing.Common": {
+              "target": "Package",
+              "version": "[7.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

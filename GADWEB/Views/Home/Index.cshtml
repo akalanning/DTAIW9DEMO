@@ -1,0 +1,248 @@
+﻿<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <title>Document</title>
+</head>
+<body>
+    <p>
+        <button onclick="swDetect();">Start Detect</button>
+    </p>
+    <div style="width:320px;height:180px">
+        <video style="position:absolute" width="320" height="180" id="video" autoplay></video>
+        <div style="position:absolute;width:320px;height:180px;z-index:100" id="boxFaces"></div>
+    </div>
+    <!--img style="width:200px" id="my-data-uri" src=""-->
+
+    <div id="yt" style="margin-top:20px;width:533px;height:400px"></div>
+
+    <!--button onclick="axHaha()">click me</button-->
+</body>
+<script type="text/javascript">
+
+
+    var canvas
+    var ctx
+    var video;
+    var webcamWidth;
+    var webcamHeight;
+
+    navigator.getUserMedia = (
+      navigator.getUserMedia ||
+      navigator.webkitGetUserMedia ||
+      navigator.mozGetUserMedia ||
+      navigator.msGetUserMedia
+    );
+
+    var ytA=['ymKFye7CPWE','o8JNM10D69w','1KEx5I29ByM','doC0OPf3PDM'];
+
+    $(document).ready(function () {
+        startWebcam();
+        //$('#yt').attr('src','https://www.youtube.com/embed/tgbNymZ7vqY');
+    })
+
+    //--------------------------------------------------------------------
+    var lastgender=-1;
+    var adidxfemale=0;
+    var adidxmale=0;
+    function assignADfor(gender) {
+        if (gender==lastgender)
+            return;
+        lastgender=gender;
+
+        var ytidx=0;
+        if (gender==0) {
+            adidxfemale=(adidxfemale+1)%2;
+            ytidx=adidxfemale;
+        }
+        else {
+            adidxmale=(adidxmale+1)%2;
+            ytidx=2+adidxmale;
+        }
+
+        //------------------------------
+        var ytid=ytA[ytidx];
+        //console.log(ytid);
+        //$('#yt').attr('src',ytid);
+        adPlayer.cueVideoById({videoId: ytid});
+        setTimeout(function() {
+            adPlayer.playVideo();
+        }, 1000);
+        
+    }
+
+
+    var adPlayer;
+    //var adPlayerStatus=0;//0:idle,1:playing
+    function onYouTubeIframeAPIReady() {
+        adPlayer=new YT.Player("yt", {
+            videoId: "", //你的Youtube 影片ID
+            events: {
+                onStateChange: function(event) {
+                    //adPlayerStatus=0;
+                    //if (event.data==YT.PlayerState.PLAYING)
+                    //    adPlayerStatus=1;
+                    //console.log('adPlayerStatus='+adPlayerStatus);
+
+                    if (event.data==0)//play is ended
+                        lastgender=-1;
+
+                    console.log('lastgender='+lastgender);
+                }
+            }
+        });
+    }
+
+
+
+
+    function startWebcam() {
+        // canvas = document.getElementById("myCanvas")
+        video = document.getElementById('video')
+        canvas = document.createElement('canvas')
+        //video = document.createElement('video')
+        video.setAttribute('autoplay', true)
+        ctx = canvas.getContext('2d')
+
+        if (navigator.getUserMedia) {
+            navigator.getUserMedia (
+                {
+                video: true,
+                audio: false
+                },
+
+                function(stream) {
+                    webcamWidth = stream.getVideoTracks()[0].getSettings().width
+                    webcamHeight = stream.getVideoTracks()[0].getSettings().height
+                    //logg(webcamWidth+':'+webcamHeight);
+                    canvas.setAttribute('width', webcamWidth);
+                    canvas.setAttribute('height', webcamHeight);
+
+                    // video.src = window.URL.createObjectURL(localMediaStream);
+                    video.srcObject = stream
+                },
+
+                function(err) {
+                    console.log( err);
+                }
+            );
+      }
+      else {
+         console.log("getUserMedia not supported by your browser");
+      }
+  
+      //-----------------
+      setInterval(function() {
+        getCurrentFrame();
+        //console.log((new Date()).toISOString());
+      }, 10);
+    }
+
+    var swd=false;
+    function swDetect() {
+        swd=!swd;
+    }
+
+    var allow=true;
+    function getCurrentFrame() {
+        if (!swd)
+            return;
+        if (!allow)
+            return;
+        allow=false;
+
+        ctx.drawImage(video, 0,0);
+        imgDataURI=canvas.toDataURL('image/jpeg');
+        //document.getElementById("my-data-uri").src=imgDataURI;
+
+        var P={
+            IMGDATA:imgDataURI,
+            BEGT:Date.now()
+        };
+
+        $.post('/Home/detectGender',P,function (R) {//ax.post('/detectGender',P).then(R => {
+            allow=true;
+
+            console.log(R);
+            //var T=(Date.now()-R.BEGT);
+            //logg(DateTimeToString(getTnow())+"::boxes="+R.BOXES+", T="+T);
+            if (R.CODE==0) {
+                var gender=R.GENDER;
+                var gendercode=R.GENDERCODE;
+                var faceX=R.FACEX;
+                var faceY=R.FACEY;
+                var faceW=R.FACEWIDTH;
+                var faceH=R.FACEHEIGHT;
+                visualFace(faceX,faceY,faceW,faceH,gender,gendercode);
+
+                logg(`GENDER=${gender}/code=${gendercode},X=${faceX},Y=${faceY},W=${faceW},H=${faceH}`);
+
+                assignADfor(gender);
+                }
+            else
+                visualFaceClear();
+        })
+    }
+
+    function visualFace(x,y,w,h,gender,gendercode) {
+        var style=(gendercode==0 || gendercode==2)?"dashed":"solid";//dashed:with mask  solid:without mask
+        var c=(gender==1?'blue':'yellow');
+        $('#boxFaces').html(`<div style="position:relative;left:${x}%;top:${y}%;width:${w}%;height:${h}%;border:${style} 1px ${c}"></div>`);
+    }
+    function visualFaceClear() {
+        $('#boxFaces').html('');
+    }
+
+    function getTnow() {
+        return new Date();
+    }
+    function DateTimeToString(T) {//datetime to "yyyy-mm-dd HH:mm:ss"
+        return `${T.getFullYear().toString().padStart(4,'0')}-${(T.getMonth()+1).toString().padStart(2,'0')}-${T.getDate().toString().padStart(2,'0')} ${T.getHours().toString().padStart(2,'0')}:${T.getMinutes().toString().padStart(2,'0')}:${T.getSeconds().toString().padStart(2,'0')}`;
+    }
+
+
+
+
+
+
+
+
+
+
+
+    //================================================
+    var ax=axios.create({
+        baseURL: "https://api/",
+        timeout: 1500000,
+    });
+
+
+    /*function axHaha() {
+        var P={
+            PGUID:1234
+        };
+
+        ax.post('/tryHaha',P).then(R => {
+            logg(R.data);
+        })
+    }
+
+    function jqhaha() {
+        var P={
+            PGUID:1239
+        };
+
+        $.post('http://api/tryHaha',P,function (R) {
+            logg(R);
+        })
+    }*/
+
+    function logg(s) {
+        console.log(s);
+    }
+</script>
+</html>

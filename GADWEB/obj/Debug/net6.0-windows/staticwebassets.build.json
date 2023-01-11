@@ -1,0 +1,19 @@
+{
+  "Version": 1,
+  "Hash": "Nx5MonCT3RktuuBBtDYwba+wsvfmNHqK38Oj29BQFVQ=",
+  "Source": "GADWEB",
+  "BasePath": "_content/GADWEB",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "GADWEB\\wwwroot",
+      "Source": "GADWEB",
+      "ContentRoot": "C:\\Document.Courses\\2022 設計思考與人工智慧\\W9\\GADWEB\\GADWEB\\wwwroot\\",
+      "BasePath": "_content/GADWEB",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": []
+}
